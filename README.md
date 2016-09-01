@@ -7,7 +7,7 @@ in tomato->TOOLS->System Commands,input
 
 install:
 ```
-eval `wget -q -O - http://as.midzzz.com/s/rt/install.sh`
+eval `wget -q -O - http://sitename.com/s/rt/install.sh`
 ```
 
 uninstall(clean nvram):
