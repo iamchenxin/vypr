@@ -11,6 +11,13 @@ lan_ipaddr=`/bin/nvram get lan_ipaddr`
 lan_netmask=`/bin/nvram get lan_netmask`
 wandevs=`/bin/nvram get wandevs | cut -d= -f2 | cut -d" " -f1` # we only want one device here
 
+ch_up() {
+  . /jffs/rt/dnsrouter/ip-pre-up.sh;;
+}
+ch_down() {
+  . /jffs/rt/dnsrouter/ip-down.sh;;
+}
+
 mask2cidr() {
     nbits=0
     IFS=.
@@ -58,6 +65,7 @@ cleanup_ip_routes()
   ip=$(zero_bits $route_vpn_gateway $ifconfig_netmask)
   cidr=$(mask2cidr $ifconfig_netmask)
   /usr/sbin/ip route del $ip/$cidr dev $dev
+  ch_down
 }
 
 emergency_cleanup_if_necessary()
@@ -125,10 +133,11 @@ emergency_cleanup_if_necessary
 
 if [ $script_type == 'up' ]
 then
-  save_env_variables       
+  save_env_variables
   add_dns
   add_firewall_rules
   save_firewall_rules
+  ch_up
 
 else # down script
   delete_firewall_rules
